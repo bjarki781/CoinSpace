@@ -29,9 +29,46 @@
   {{/isPhonegap}}
 
   <div class="about__section">
-	  <a class="about__listitem" onclick="window.open('https://www.coin.space/coinprivacypolicy.html', '_system'); return false;" href="">
-	  	<div class="about__listitem-title">{{translate("Terms of Use")}}</div>
+	  <a class="about__listitem" onclick="window.open('https://smileyco.in/#/getstarted', '_system'); return false;" href="">
+	  	<div class="about__listitem-title">{{translate("Get started with Smileycoin")}}</div>
 	  	<div class="about__listitem-value"><span class="about-arrowright"></span></div>
 	  </a>
   </div>
+
+  <div class="about__section">
+	  <a class="about__listitem" onclick="window.open('https://smileyco.in/#/about', '_system'); return false;" href="">
+	  	<div class="about__listitem-title">{{translate("Introduction to Smileycoin")}}</div>
+	  	<div class="about__listitem-value"><span class="about-arrowright"></span></div>
+	  </a>
+  </div>
+
+  <div class="about__section">
+	  <a class="about__listitem" onclick="window.open('https://smileyco.in/#/coininfo', '_system'); return false;" href="">
+	  	<div class="about__listitem-title">{{translate("Coin and mining information")}}</div>
+	  	<div class="about__listitem-value"><span class="about-arrowright"></span></div>
+	  </a>
+  </div>
+
+  <div class="about__section">
+	  <a class="about__listitem" onclick="window.open('https://smileyco.in/#/details', '_system'); return false;" href="">
+	  	<div class="about__listitem-title">{{translate("Details")}}</div>
+	  	<div class="about__listitem-value"><span class="about-arrowright"></span></div>
+	  </a>
+  </div>
+
+  <div class="about__section">
+	  <a class="about__listitem" onclick="window.open('https://smileyco.in/#/wallets', '_system'); return false;" href="">
+	  	<div class="about__listitem-title">{{translate("Wallets")}}</div>
+	  	<div class="about__listitem-value"><span class="about-arrowright"></span></div>
+	  </a>
+  </div>
+
+  <div class="about__section">
+	  <a class="about__listitem" onclick="window.open('https://blocks.smileyco.in/', '_system'); return false;" href="">
+	  	<div class="about__listitem-title">{{translate("Smileycoin block explorer")}}</div>
+	  	<div class="about__listitem-value"><span class="about-arrowright"></span></div>
+	  </a>
+  </div>
+
+
 </div>

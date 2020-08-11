@@ -32,252 +32,252 @@ var id = null
 var availableTouchId = false
 
 var Wallet = {
-  bitcoin: CsWallet,
-  bitcoincash: CsWallet,
-  litecoin: CsWallet,
-  testnet: CsWallet,
-  smileycoin: CsWallet,
-  ethereum: EthereumWallet
+    bitcoin: CsWallet,
+    bitcoincash: CsWallet,
+    litecoin: CsWallet,
+    testnet: CsWallet,
+    smileycoin: CsWallet,
+    ethereum: EthereumWallet
 }
 
 var urlRoot = process.env.SITE_URL
 
 function createWallet(passphrase, network, callback) {
-  var message = passphrase ? 'Decoding seed phrase' : 'Generating'
-  emitter.emit('wallet-opening', message)
+    var message = passphrase ? 'Decoding seed phrase' : 'Generating'
+    emitter.emit('wallet-opening', message)
 
-  var data = {passphrase: passphrase}
-  if(!passphrase){
-   data.entropy = rng(128 / 8).toString('hex')
-  }
+    var data = { passphrase: passphrase }
+    if (!passphrase) {
+        data.entropy = rng(128 / 8).toString('hex')
+    }
 
-  worker.onmessage = function(e) {
-    assignSeedAndId(e.data.seed)
+    worker.onmessage = function(e) {
+        assignSeedAndId(e.data.seed)
 
-    mnemonic = e.data.mnemonic
-    auth.exist(id, function(err, userExists){
-      if(err) return callback(err);
+        mnemonic = e.data.mnemonic
+        auth.exist(id, function(err, userExists) {
+            if (err) return callback(err);
 
-      callback(null, {userExists: userExists, mnemonic: mnemonic})
-    })
-  }
+            callback(null, { userExists: userExists, mnemonic: mnemonic })
+        })
+    }
 
-  worker.onerror = function(e) {
-    return callback({message: e.message.replace("Uncaught Error: ", '')})
-  }
+    worker.onerror = function(e) {
+        return callback({ message: e.message.replace("Uncaught Error: ", '') })
+    }
 
-  worker.postMessage(data)
+    worker.postMessage(data)
 }
 
 function callbackError(err, callbacks) {
-  callbacks.forEach(function (callback) {
-    if (!callback) return;
-    return callback(err);
-  });
+    callbacks.forEach(function(callback) {
+        if (!callback) return;
+        return callback(err);
+    });
 }
 
 function setPin(pin, network, done, txSyncDone) {
-  var callbacks = [done, txSyncDone]
-  auth.register(id, pin, function(err, token) {
-    if (err) return callbackError(err, callbacks);
+    var callbacks = [done, txSyncDone]
+    auth.register(id, pin, function(err, token) {
+        if (err) return callbackError(err, callbacks);
 
-    savePin(pin);
-    walletDb.saveEncrypedSeed(id, AES.encrypt(seed, token));
+        savePin(pin);
+        walletDb.saveEncrypedSeed(id, AES.encrypt(seed, token));
 
-    emitter.emit('wallet-opening', 'Synchronizing Wallet');
-    emitter.emit('db-init');
+        emitter.emit('wallet-opening', 'Synchronizing Wallet');
+        emitter.emit('db-init');
 
-    emitter.once('db-ready', function(err) {
-      if (err) return callbackError(err, callbacks);
-      initWallet(network, done, txSyncDone);
-    });
-  })
+        emitter.once('db-ready', function(err) {
+            if (err) return callbackError(err, callbacks);
+            initWallet(network, done, txSyncDone);
+        });
+    })
 }
 
 function removeAccount(callback) {
-  auth.remove(id, callback);
+    auth.remove(id, callback);
 }
 
 function setUsername(username, callback) {
-  auth.setUsername(id, username, callback);
+    auth.setUsername(id, username, callback);
 }
 
 function openWalletWithPin(pin, network, done, txSyncDone) {
-  var callbacks = [done, txSyncDone]
-  var credentials = walletDb.getCredentials();
-  var id = credentials.id
-  var encryptedSeed = credentials.seed
-  auth.login(id, pin, function(err, token) {
-    if (err) {
-      if (err.message === 'user_deleted') {
-        walletDb.deleteCredentials();
-      }
-      return callbackError(err, callbacks);
-    }
+    var callbacks = [done, txSyncDone]
+    var credentials = walletDb.getCredentials();
+    var id = credentials.id
+    var encryptedSeed = credentials.seed
+    auth.login(id, pin, function(err, token) {
+        if (err) {
+            if (err.message === 'user_deleted') {
+                walletDb.deleteCredentials();
+            }
+            return callbackError(err, callbacks);
+        }
 
-    savePin(pin)
-    assignSeedAndId(AES.decrypt(encryptedSeed, token));
+        savePin(pin)
+        assignSeedAndId(AES.decrypt(encryptedSeed, token));
 
-    emitter.emit('wallet-opening', 'Synchronizing Wallet');
-    emitter.emit('db-init');
+        emitter.emit('wallet-opening', 'Synchronizing Wallet');
+        emitter.emit('db-init');
 
-    emitter.once('db-ready', function(err) {
-      if (err) return callbackError(err, callbacks);
-      initWallet(network, done, txSyncDone);
-    });
-  })
+        emitter.once('db-ready', function(err) {
+            if (err) return callbackError(err, callbacks);
+            initWallet(network, done, txSyncDone);
+        });
+    })
 }
 
-function savePin(pin){
+function savePin(pin) {
     if (availableTouchId) window.localStorage.setItem('_pin_cs', AES.encrypt(pin, 'pinCoinSpace'));
 }
 
-function setAvailableTouchId(){
+function setAvailableTouchId() {
     availableTouchId = true
 }
 
-function getPin(){
+function getPin() {
     var pin = window.localStorage.getItem('_pin_cs')
     return pin ? AES.decrypt(pin, 'pinCoinSpace') : null
 }
 
-function resetPin(){
+function resetPin() {
     window.localStorage.removeItem('_pin_cs')
 }
 
 function assignSeedAndId(s) {
-  seed = s
-  id = crypto.createHash('sha256').update(seed).digest('hex')
-  emitter.emit('wallet-init', {seed: seed, id: id})
+    seed = s
+    id = crypto.createHash('sha256').update(seed).digest('hex')
+    emitter.emit('wallet-init', { seed: seed, id: id })
 }
 
 function initWallet(networkName, done, txDone) {
-  var token = getToken();
-  if (!isValidWalletToken(token)) {
-    setToken(networkName);
-    token = false;
-  }
-
-  var options = {
-    networkName: networkName,
-    done: done,
-    txDone: function(err) {
-      if(err) return txDone(err)
-      var txObjs = wallet.getTransactionHistory();
-      txDone(null, txObjs.map(function(tx) {
-        return parseHistoryTx(tx)
-      }))
+    var token = getToken();
+    if (!isValidWalletToken(token)) {
+        setToken(networkName);
+        token = false;
     }
-  }
+
+    var options = {
+        networkName: networkName,
+        done: done,
+        txDone: function(err) {
+            if (err) return txDone(err)
+            var txObjs = wallet.getTransactionHistory();
+            txDone(null, txObjs.map(function(tx) {
+                return parseHistoryTx(tx)
+            }))
+        }
+    }
 
 
-  if (networkName === 'ethereum') {
-    options.seed = seed;
-    options.minConf = 12;
-    options.token = token;
-    convert.setDecimals(token ? token.decimals : 18);
-  } else if (['bitcoin', 'bitcoincash', 'litecoin', 'smileycoin', 'testnet'].indexOf(networkName) !== -1) {
-    var accounts = getDerivedAccounts(networkName);
-    options.externalAccount = accounts.externalAccount;
-    options.internalAccount = accounts.internalAccount;
-    //options.minConf = 20; SKOÐA
-    options.minConf = 1;
-    convert.setDecimals(8);
-  }
+    if (networkName === 'ethereum') {
+        options.seed = seed;
+        options.minConf = 12;
+        options.token = token;
+        convert.setDecimals(token ? token.decimals : 18);
+    } else if (['bitcoin', 'bitcoincash', 'litecoin', 'smileycoin', 'testnet'].indexOf(networkName) !== -1) {
+        var accounts = getDerivedAccounts(networkName);
+        options.externalAccount = accounts.externalAccount;
+        options.internalAccount = accounts.internalAccount;
+        //options.minConf = 20; SKOÐA
+        options.minConf = 1;
+        convert.setDecimals(8);
+    }
 
-  wallet = new Wallet[networkName](options);
-  wallet.denomination = token ? denomination(token) : denomination(networkName);
+    wallet = new Wallet[networkName](options);
+    wallet.denomination = token ? denomination(token) : denomination(networkName);
 }
 
 function isValidWalletToken(token) {
-  var walletTokens = db.get('walletTokens') || [];
-  var isFound = _.find(walletTokens, function(item) {
-    return _.isEqual(token, item);
-  });
-  return !!isFound;
+    var walletTokens = db.get('walletTokens') || [];
+    var isFound = _.find(walletTokens, function(item) {
+        return _.isEqual(token, item);
+    });
+    return !!isFound;
 }
 
 function getDerivedAccounts(networkName) {
-  if (wallet && wallet.networkName === networkName && wallet.externalAccount && wallet.internalAccount) {
-    return {
-      externalAccount: wallet.externalAccount,
-      internalAccount: wallet.internalAccount
+    if (wallet && wallet.networkName === networkName && wallet.externalAccount && wallet.internalAccount) {
+        return {
+            externalAccount: wallet.externalAccount,
+            internalAccount: wallet.internalAccount
+        }
     }
-  }
-  var network = bitcoin.networks[networkName]
-  var accountZero = HDKey.fromMasterSeed(new Buffer(seed, 'hex'), network.bip32).deriveChild(HDKey.HARDENED_OFFSET)
-  return {
-    externalAccount: accountZero.deriveChild(0),
-    internalAccount: accountZero.deriveChild(1)
-  }
+    var network = bitcoin.networks[networkName]
+    var accountZero = HDKey.fromMasterSeed(new Buffer(seed, 'hex'), network.bip32).deriveChild(HDKey.HARDENED_OFFSET)
+    return {
+        externalAccount: accountZero.deriveChild(0),
+        internalAccount: accountZero.deriveChild(1)
+    }
 }
 
 function parseHistoryTx(tx) {
-  var networkName = wallet.networkName
-  if (networkName === 'ethereum') {
-    return utils.parseEthereumTx(tx)
-  } else if (['bitcoin', 'bitcoincash', 'litecoin', 'smileycoin', 'testnet'].indexOf(networkName) !== -1) {
-    return utils.parseBtcLtcTx(tx)
-  }
+    var networkName = wallet.networkName
+    if (networkName === 'ethereum') {
+        return utils.parseEthereumTx(tx)
+    } else if (['bitcoin', 'bitcoincash', 'litecoin', 'smileycoin', 'testnet'].indexOf(networkName) !== -1) {
+        return utils.parseBtcLtcTx(tx)
+    }
 }
 
 function sync(done, txDone) {
-  initWallet(wallet.networkName, done, txDone)
+    initWallet(wallet.networkName, done, txDone)
 }
 
 function getWallet() {
-  return wallet;
+    return wallet;
 }
 
 function getId() {
-  return id;
+    return id;
 }
 
 function walletExists() {
-  return !!walletDb.getCredentials();
+    return !!walletDb.getCredentials();
 }
 
 function reset() {
-  walletDb.deleteCredentials();
+    walletDb.deleteCredentials();
 }
 
 function getDynamicFees(callback) {
-  if (wallet.networkName === 'ethereum') return callback();
-  var fees = cache.get('fees')
+    if (wallet.networkName === 'ethereum') return callback();
+    var fees = cache.get('fees')
 
-  if (fees) {
-    return callback(fees)
-  }
+    if (fees) {
+        return callback(fees)
+    }
 
-  //EKKI GLEYMA
-  request({
-    url: urlRoot + 'fees',
-    params: {
-      network: wallet.networkName
-    },
-  }, function(err, data) {
-    if (err) return callback({});
-    cache.put('fees', data, 10 * 60 * 1000)
-    callback(data)
-  });
+    //EKKI GLEYMA
+    request({
+        url: urlRoot + 'fees',
+        params: {
+            network: wallet.networkName
+        },
+    }, function(err, data) {
+        if (err) return callback({});
+        cache.put('fees', data, 10 * 60 * 1000)
+        callback(data)
+    });
 }
 
 module.exports = {
-  openWalletWithPin: openWalletWithPin,
-  createWallet: createWallet,
-  setPin: setPin,
-  removeAccount: removeAccount,
-  setUsername: setUsername,
-  getWallet: getWallet,
-  getId: getId,
-  walletExists: walletExists,
-  reset: reset,
-  sync: sync,
-  initWallet: initWallet,
-  validateSend: validateSend,
-  parseHistoryTx: parseHistoryTx,
-  getPin: getPin,
-  resetPin: resetPin,
-  setAvailableTouchId: setAvailableTouchId,
-  getDynamicFees: getDynamicFees
+    openWalletWithPin: openWalletWithPin,
+    createWallet: createWallet,
+    setPin: setPin,
+    removeAccount: removeAccount,
+    setUsername: setUsername,
+    getWallet: getWallet,
+    getId: getId,
+    walletExists: walletExists,
+    reset: reset,
+    sync: sync,
+    initWallet: initWallet,
+    validateSend: validateSend,
+    parseHistoryTx: parseHistoryTx,
+    getPin: getPin,
+    resetPin: resetPin,
+    setAvailableTouchId: setAvailableTouchId,
+    getDynamicFees: getDynamicFees
 }

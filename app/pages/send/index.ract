@@ -27,6 +27,20 @@
             {{>svg_mecto}}
           </span>
         </div>
+
+            
+
+      </div>
+
+      <div class="donation__field">
+        <label for="donations">{{ translate("Donate your SMLY's") }}</label>
+          <span class="_donations dropdown">
+                <select id="donations" value="{{selectedDonation}}" tabindex="-1" on-change="donate-to-address" >
+                  {{#donationAddresses}}
+                    <option value="{{address}}">{{name}}</option>
+                  {{/donationAddresses}}
+                </select>
+          </span>
       </div>
 
       <div class="send__amount">
