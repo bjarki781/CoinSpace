@@ -10,7 +10,8 @@ function parseBtcLtcTx(tx) {
     ins: tx.vin.map(function(input) {
       return {
         address: input.addr,
-        amount: input.valueSat
+        amount: input.valueSat,
+        sequence: input.sequence
       }
     }),
     outs: tx.vout.map(function(output) {

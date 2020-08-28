@@ -14,7 +14,9 @@
     <div id="receive" class="content"></div>
     <div id="exchange" class="content"></div>
     <div id="history" class="content"></div>
+	<div id="get_smly" class="content"></div>
     <div id="tokens" class="content"></div>
+    <div id="vote" class="content"></div>
 
   </div>
 

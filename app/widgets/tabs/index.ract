@@ -1,3 +1,15 @@
+<!--
+  Change all the relevant files for adding a tab:
+  widgets/tabs/index.ract
+  widgets/tabs/index.js
+  widgets/frame/index.ract
+  widgets/frame/index.js
+  pages/*create_new_folder*
+  application.scss
+  lib/i18n/translations/all_files
+-->
+
+
 <div class="tabs">
   <a id="send_tab" data-tab='send' class="tab" on-click="select">
     <span class="tab__icon">
@@ -17,13 +29,19 @@
       {{>svg_exchange}}
     </span>
     <span class="tab__text">{{translate("Exchange")}}</span>
-  </a
+  </a>
   -->
   <a id="history_tab" data-tab='history' class="tab" on-click="select">
     <span class="tab__icon">
       {{>svg_history}}
     </span>
     <span class="tab__text">{{translate("History")}}</span>
+  </a>
+  <a id="get_smly_tab" data-tab='get_smly' class="tab" on-click="select">
+    <span class="tab__icon">
+      {{>svg_exchange}}
+    </span>
+    <span class="tab__text">{{translate("Get SMLY")}}</span>
   </a>
   <!--
   <a id="tokens_tab" data-tab='tokens' class="tab" on-click="select">
@@ -33,4 +51,10 @@
     <span class="tab__text">{{translate("Tokens")}}</span>
   </a>
   -->
+  <a id="vote_tab" data-tab='vote' class="tab" on-click="select">
+    <span class="tab__icon">
+      {{>svg_user}}
+    </span>
+    <span class="tab__text">{{translate("Vote")}}</span>
+  </a>
 </div>

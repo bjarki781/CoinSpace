@@ -11,5 +11,6 @@ build/
 docker-compose.dev.yml
 docker-compose.prod.yml
 .vscode/
+.vs/
 
 /.local-conf

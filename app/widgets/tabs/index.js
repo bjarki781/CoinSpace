@@ -13,7 +13,9 @@ module.exports = function(el){
     send: '#send_tab',
     receive: '#receive_tab',
     // exchange: '#exchange_tab',
+	get_smly: '#get_smly_tab',
     history: '#history_tab',
+    vote: '#vote_tab',
     // tokens: '#tokens_tab'
   }
   var active;
