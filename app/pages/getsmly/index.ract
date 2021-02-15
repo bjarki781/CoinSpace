@@ -5,14 +5,22 @@
   <div id="donate_options" class="get_smly_section">
     <h2> 1. Donating to Education in a Suitcase </h2>
 
+    <div class="patreon_line">
+      <p> The Smiley Charity will happily accept your donations. You may also choose to receive SMLY as a perk for your donation. </p>
+      <br>
+      <p>You can support the Smiley Charity through their <a href="https://www.patreon.com/eias">Patreon page</a>.</p>
+    </div>
+    <br>
     <div class="get_smly_section_info_text">
-      <p> The project Education in a Suitcase will happily accept your donations. You may also choose to receive SMLY as a perk for your donation. </p>
+      <p>You can also donate to them using PayPal.</p>
+      <br>
+      <p> Remember to use only small amounts while you are finding your way through this! You will not make money from this transaction, but you will painlessly get some Smileycoins which you can then use to test the waters of electronic currencies.</p>
       <br>
       <p> Remember to use only small amounts while you are finding your way through this! You will not make money from this transaction, but you will painlessly get some Smileycoins which you can then use to test the waters of electronic currencies.</p>
       <br>
       <h3> Donating via PayPal: </h3>
       <p> It is <b>opt-IN</b> to recieve the SMLY for donating so you must <b>tick the checkbox</b> to get any SMLY if you donate. </p>
-      <p> If you do, you will get 40000 SMLY for each Euro you donate. </p>
+      <p> If you do, you will get some SMLY for each Euro you donate. </p>
       <p> Tick the checkbox if you wish to get SMLY in return as a perk, and then click the donate button from PayPal corresponding to the amount you wish to donate and go through the following steps as prompted by the PayPal system. </p>
       <br>
       <div id="get_perks_div_container">
@@ -99,10 +107,6 @@
       </form>
     </div>
 
-    <br>
-    <div class="patreon_line">
-      <p>You can also support the Smiley Charity through their <a href="https://www.patreon.com/eias">Patreon page</a>.</p>
-    </div>
   </div>
 
   <div id="tutorweb_options" class="get_smly_section">
