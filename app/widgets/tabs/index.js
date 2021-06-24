@@ -16,6 +16,7 @@ module.exports = function(el){
 	get_smly: '#get_smly_tab',
     history: '#history_tab',
     vote: '#vote_tab',
+    coupons: '#coupons_tab',
     // tokens: '#tokens_tab'
   }
   var active;
