@@ -28,7 +28,7 @@ Compile:
     API_SMLY_URL=https://blocks.smileyco.in/api/
     EOF
 
-    npm install
+    npm ci
     npm run client
 
 Configure for production use:
