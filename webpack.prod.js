@@ -64,8 +64,9 @@ var config = merge(common, {
       safe: true
     }),
     new UglifyJSPlugin({
-      mangle: {
-        except: ['BigInteger','ECPair','Point']
+      uglifyOptions: {
+        mangle: true,
+        exclude: ['BigInteger','ECPair','Point']
       }
     }),
     new ExtractTextPlugin({
