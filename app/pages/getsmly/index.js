@@ -12,18 +12,20 @@ module.exports = function(el){
       // address: '',
       // ip: '',
       // date: '',
+      get_perks_show: false,
       isPhonegap: process.env.BUILD_TYPE === 'phonegap'
     }
   })
 
-  /*
+
   // Not needed when all the things below are not implemented
   emitter.on('wallet-ready', function(){
-    ractive.set('address', getAddress())
-    getIP()
-    ractive.set('date', getDate())
+    // ractive.set('address', getAddress())
+    // getIP()
+    // ractive.set('date', getDate())
+    ractive.set('nextAddress', "wallet:"+CS.getWallet().getNextAddress());
   })
-  */
+
 
   /*
   // Not needed unless we want to display address in html
@@ -48,34 +50,25 @@ module.exports = function(el){
   }
   */
   
-  document.getElementById("perks_check").addEventListener('click', function() {
-    if (this.checked == true) {
-      document.getElementById("get_perks_show").innerHTML = "Yes"
-    }
-    else {
-      document.getElementById("get_perks_show").innerHTML = "No"
-    }
-  }, false);
+  
 
   // just send the wallet address with the form, if perks is selected
-  jQuery('.paypal_option').submit(function(e) {
-    e.preventDefault()
+  // Enable/Disable perk for donating. If enabled add wallet address to the forms. 
+  ractive.on('perks-check', function(){
+
+    ractive.set('get_perks_show', !ractive.get('get_perks_show'));
 
     var list = document.getElementsByClassName('donate_form_info');
-    var n;
-    if ( document.getElementById("perks_check").checked == true) {
-      for (n = 0; n < list.length; ++n) {
-          list[n].value = "wallet:" + CS.getWallet().getNextAddress();
+    console.log(list);
+    for (var n = 0; n < list.length; ++n) {
+      if ( ractive.get('get_perks_show') === true) {
+      list[n].value = ractive.get('nextAddress');
+          console.log(list[n].value);
+      } else {
+        list[n].value = "";
       }
     }
-    else {
-      for (n = 0; n < list.length; ++n) {
-        list[n].value = "";
-    }
-    }
-    
-    this.submit();
-  });
+  }); 
 
 
   return ractive
