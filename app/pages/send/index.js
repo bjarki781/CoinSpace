@@ -82,7 +82,7 @@ module.exports = function(el) {
     emitter.on('wallet-ready', function() {
         ractive.set('denomination', getWallet().denomination);
         ractive.set('gasLimit', getWallet().gasLimit);
-        var sa = getWallet().getServiceAddresses()["Nonprofit Organization"]; //Breyta
+        var sa = getWallet().getServiceAddresses()['Nonprofit Organization']; //Breyta
         if (!sa) {
             sa = new Array()
         }
@@ -171,8 +171,20 @@ module.exports = function(el) {
     })
 
     ractive.on('donate-to-address', function() {
-        var donation = ractive.get("selectedDonation");
-        ractive.set("to", donation);
+            var donation = ractive.get('selectedDonation');
+            ractive.set('to', donation);
+    })
+
+    ractive.on('donation-info', function() {
+        var donAdd = ractive.get('selectedDonation');
+        if (donAdd !== ''){
+            var URL = 'https://services.smileyco.in/';
+            var donURL = URL.concat(donAdd);
+            ractive.set('infoURL', donURL);
+        }
+        else { 
+            ractive.set('infoURL', undefined);
+        }
     })
 
     function validateAndShowConfirm(to, alias, dynamicFees, amount) {
