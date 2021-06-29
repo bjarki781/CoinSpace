@@ -23,4 +23,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: cp .env.example .env.prod
       - run: npm ci
+      - name: Debug shell
+        uses: mxschmitt/action-tmate@v3
       - run: npm run client
