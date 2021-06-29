@@ -59,7 +59,7 @@
   </a>
   <a id="coupons_tab" data-tab='coupons' class="tab" on-click="select">
     <span class="tab__icon">
-      {{>svg_user}}
+      {{>svg_coupons}}
     </span>
     <span class="tab__text">{{translate("Coupons")}}</span>
   </a>
