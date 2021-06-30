@@ -26,8 +26,8 @@
       <div id="get_perks_div_container">
         <div id="get_perks_div">
           <p><b>Get SMLY as a perk for donating?</b></p>
-          <input id="perks_check" type="checkbox">
-          <p id="get_perks_show">No</p>
+          <input id="perks_check" type="checkbox" on-click="perks-check">
+          <p id="get_perks_show">{{get_perks_show ? "Yes" : "No"}}</p>
         </div>
       </div>
     </div>
