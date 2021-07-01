@@ -13,6 +13,7 @@ var initHistory = require('pages/history')
 var initGetSMLY = require('pages/getsmly')
 var initTokens = require('pages/tokens')
 var initVote = require('pages/vote')
+var initCoupons = require('pages/coupons')
 var Hammer = require('hammerjs')
 
 module.exports = function(el){
@@ -35,7 +36,8 @@ module.exports = function(el){
     history: initHistory(ractive.find('#history')),
 	get_smly: initGetSMLY(ractive.find('#get_smly')),
     tokens: initTokens(ractive.find('#tokens')),
-    vote: initVote(ractive.find('#vote'))
+    vote: initVote(ractive.find('#vote')),
+    coupons: initCoupons(ractive.find('#coupons'))
   }
 
   var currentPage = tabs.send
@@ -54,12 +56,16 @@ module.exports = function(el){
 	  } else if (currentPage === tabs.get_smly) {
 		emitter.emit('change-tab', 'vote')
 	  } else if (currentPage === tabs.vote) {
+		emitter.emit('change-tab', 'coupons')
+	  } else if (currentPage === tabs.coupons) {
 		emitter.emit('change-tab', 'tokens')
       }
     })
 
     Hammer(ractive.find('#main'), {velocity: 0.1}).on('swiperight', function() {
       if (currentPage === tabs.tokens) {
+        emitter.emit('change-tab', 'coupons')
+      } else if (currentPage === tabs.coupons) {
         emitter.emit('change-tab', 'vote')
 	  } else if (currentPage === tabs.vote) {
         emitter.emit('change-tab', 'getsmly')

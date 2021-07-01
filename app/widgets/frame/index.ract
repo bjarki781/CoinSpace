@@ -17,6 +17,7 @@
 	<div id="get_smly" class="content"></div>
     <div id="tokens" class="content"></div>
     <div id="vote" class="content"></div>
+    <div id="coupons" class="content"></div>
 
   </div>
 

@@ -17,7 +17,8 @@ function parseBtcLtcTx(tx) {
     outs: tx.vout.map(function(output) {
       return {
         address: output.scriptPubKey.addresses ? output.scriptPubKey.addresses[0] : null,
-        amount: output.value * 100000000
+        amount: output.value * 100000000,
+        scriptPubKey: output.scriptPubKey
       }
     })
   }
