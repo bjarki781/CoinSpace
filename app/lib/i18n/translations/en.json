@@ -71,10 +71,13 @@
   "Before you start using Mecto, you need to enter a name that will help others identify you.": "Before you start using Mecto, you need to enter a name that will help others identify you.",
   "Save": "Save",
   "Loading transactions...": "Loading transactions...",
+  "Loading coupons...": "Loading coupons...",
   "Your transaction history": "Your transaction history",
+  "Your coupons": "Your coupons",
   "pending confirmation": "pending confirmation",
   "Received": "Received",
   "You do not have any transactions yet": "You don't have any transactions yet",
+  "You do not have any coupons yet": "You don't have any coupons yet",
   "Transaction Id:": "Transaction Id:",
   "Transaction Fee:": "Transaction Fee:",
   "Inputs:": "Inputs:",
@@ -189,6 +192,7 @@
   "Smileycoin block explorer": "Smileycoin block explorer",
   "Amount too high. You need to send this amount in smaller parts.": "Amount too high. You need to send this amount in smaller parts.",
   "Vote": "Vote", 
+  "Coupons": "Coupons", 
   "Candidate address": "Candidate address",
   "Donate your SMLY's": "Donate your SMLY's"
 }
