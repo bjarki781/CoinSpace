@@ -197,7 +197,7 @@ module.exports = function(el) {
         var donAdd = ractive.get('selectedDonation');
         if (donAdd !== ''){
             var URL = 'https://services.smileyco.in/';
-            var donURL = URL.concat(donAdd);
+            var donURL = URL.concat(donAdd, '.html');
             ractive.set('infoURL', donURL);
         }
         else { 
