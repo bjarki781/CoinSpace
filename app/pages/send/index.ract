@@ -33,14 +33,22 @@
       </div>
 
       <div class="donation__field">
-        <label for="donations">{{ translate("Donate your SMLY's") }}</label>
+
+        <label for="npolist">{{ translate("Pay/Donate to listed organization") }}</label>
           <span class="_donations dropdown">
                 <select id="donations" value="{{selectedDonation}}" tabindex="-1" on-change="donate-to-address" on-change="donation-info">
-                  {{#donationAddresses}}
-                    <option value="{{address}}">{{name}}</option>
-                  {{/donationAddresses}}
+                  <option value="" selected>None</option>
+                  {{#each orgList}}
+                    <optgroup label="{{.Groupname}}">
+                      {{#each organizations}}
+                        <option value="{{.address}}" >{{.name}} </option>
+                      {{/each}}
+                    </optgroup>
+                  {{/each}}
                 </select>
           </span>
+
+
 
         <div class="donation__info">
           <label class="_label" for="infoURL">
@@ -55,8 +63,7 @@
 
       <div class="send__amount">
 
-        <label class="_label" for="bitcoin">{{translate("Amount")}}</label>
-
+        <label class="_label" on-click="empty-amount" for="bitcoin">{{translate("Amount")}}</label>
           <div class="_input-group">
             <input id="bitcoin" class="_input" type="number" min="0" step="any" on-keyup="bitcoin-to-fiat" on-enter="open-send" on-focus="focusAmountInput" on-blur="blurAmountInput">
             <span class="_currency">{{denomination}}</span>
