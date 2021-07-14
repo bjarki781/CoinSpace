@@ -33,7 +33,9 @@ module.exports = function(el) {
             validating: false,
             gasLimit: '',
             selectedDonation: { name: 'None', address: '' },
-            donationAddresses: {}
+            orgList: [],
+            storeAmount: '',
+            emptyWalletToggle: false,
         }
     })
 
@@ -74,22 +76,38 @@ module.exports = function(el) {
         resolveTo(to, function(data) {
             fixBitcoinCashAddress(data);
             getDynamicFees(function(dynamicFees) {
+                console.log("data.to: " + data.to);
+                console.log("d.alias: " + data.alias);
+                console.log("dynfees: ");
+                console.log(dynamicFees);
                 validateAndShowConfirm(data.to, data.alias, dynamicFees, null);
             });
         })
     })
 
-    emitter.on('wallet-ready', function() {
-        ractive.set('denomination', getWallet().denomination);
-        ractive.set('gasLimit', getWallet().gasLimit);
-        var sa = getWallet().getServiceAddresses()['Nonprofit Organization']; //Breyta
-        if (!sa) {
-            sa = new Array()
+    ractive.on('empty-amount', function() {
+        console.log('Trying to empty wallet!');
+        var wallet = getWallet();
+        var balance = wallet.getBalance() - 1.0;
+        if(balance < 1){
+            return;
         }
+        else if(!ractive.get('emptyWalletToggle')){
+            ractive.set('storeAmount', ractive.find('#bitcoin').value);
+            ractive.find('#bitcoin').value = balance;
+        } else {
+            ractive.find('#bitcoin').value = ractive.get('storeAmount');
+        }
+        ractive.set('emptyWalletToggle', !ractive.get('emptyWalletToggle'));
+    })
+
+    emitter.on('wallet-ready', function() {
+        var wallet = getWallet();
+        ractive.set('denomination', wallet.denomination);
+        ractive.set('gasLimit', wallet.gasLimit);
+        ractive.set('orgList', wallet.getAllOrgLists());
         var defDon = { name: 'None', address: '' };
-        sa.unshift(defDon);
         ractive.set('selectedDonation', defDon);
-        ractive.set('donationAddresses', sa);
     });
 
     emitter.once('ticker', function(rates) {
@@ -179,7 +197,7 @@ module.exports = function(el) {
         var donAdd = ractive.get('selectedDonation');
         if (donAdd !== ''){
             var URL = 'https://services.smileyco.in/';
-            var donURL = URL.concat(donAdd);
+            var donURL = URL.concat(donAdd, '.html');
             ractive.set('infoURL', donURL);
         }
         else { 
