@@ -64,10 +64,11 @@ var config = merge(common, {
       safe: true
     }),
     new UglifyJSPlugin({
-      uglifyOptions: {
-        mangle: true,
-        exclude: ['BigInteger','ECPair','Point']
-      }
+        uglifyOptions: {
+          mangle: {
+            reserved: ['BigInteger', 'ECPair', 'Point']
+          }
+        }
     }),
     new ExtractTextPlugin({
       filename: 'assets/css/all.[contenthash:8].css',
