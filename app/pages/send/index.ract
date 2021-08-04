@@ -39,7 +39,7 @@
                 <select id="donations" value="{{selectedDonation}}" tabindex="-1" on-change="donate-to-address" on-change="donation-info">
                   <option value="" selected>None</option>
                   {{#each orgList}}
-                    <optgroup label="{{.Groupname}}">
+                    <optgroup label="{{.organization_group}}">
                       {{#each organizations}}
                         <option value="{{.address}}" >{{.name}} </option>
                       {{/each}}
