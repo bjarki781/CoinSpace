@@ -19,7 +19,7 @@
           <span class='_time'>{{formatConfirmations(confirmations)}}</span>
         {{/isConfirmed}}
       </div>
-    <div class="_businesscode"> {{getLongBusinessName(business) + ":  " + code}} </div>
+    <div class="_businesscode"> {{business + ":  " + code}} </div>
     </div>
   {{/each}}
 

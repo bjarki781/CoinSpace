@@ -121,8 +121,6 @@ module.exports = function(el) {
         var defDon = { name: 'None', address: '' };
         ractive.set('selectedDonation', defDon);
         ractive.set('couponList', wallet.getCouponLists().Coupons);
-        console.log(wallet.getCouponLists().Coupons);
-        console.log(wallet.getAllOrgLists());
         var defCoup = { Name: 'None', Address: '', Location: '', Date: '' };
         ractive.set('selectedCoupon', defCoup);
     });
