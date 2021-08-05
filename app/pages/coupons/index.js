@@ -49,20 +49,14 @@ function findEncryptedOutput(tx) {
 }
 
 function isDecryptedCoupon(obj) {
-    let words = obj.coupon.split(' ')
-
-    return words[0] == 'COUP'
+    return obj.coupon[0] == 'C';
 }
 
 // a coupon is on the from "COUP $SHORTNAME $COUPON_CODE" where
 // short name is an abbrevation for the organization
 function decryptedToCoupon(obj) {
-    let words = obj.coupon.split(' ')
-    if (words.length != 3) {
-        return null
-    }
-
-    return {'business': words[1], 'code': words[2], 'timestamp': obj.timestamp, 'confirmations': obj.confirmations}
+    return {'business': obj.coupon.slice(1,4), 'code': obj.coupon.slice(4), 
+            'timestamp': obj.timestamp, 'confirmations': obj.confirmations};
 }
 
 module.exports = function(el){
@@ -112,7 +106,7 @@ module.exports = function(el){
     const decrypted_txs = encrypted_txs.map(tx => txToDecrypted(tx, findEncryptedOutput(tx)))
     // take those decrypted tx and check whether they are actually coupons, and if so 
     // parse them into a coupon object
-    const coupons = decrypted_txs.filter(isDecryptedCoupon).map(decryptedToCoupon)
+    const coupons = decrypted_txs.filter(isDecryptedCoupon).map(decryptedToCoupon);
     ractive.set('coupons', coupons)
     ractive.set('loadingTx', false)
   })
