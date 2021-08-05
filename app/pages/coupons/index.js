@@ -94,10 +94,15 @@ module.exports = function(el){
     }
   })
 
-  emitter.on('append-transactions', function(newTxs){
-    newTxs.filter(isCoupon).forEach(function(tx) {ractive.unshift('coupons', txToCoupon(tx))})
-    ractive.set('loadingTx', false)
+  emitter.on('append-transactions', newTxs => {
+    newTxs.filter(tx => findEncryptedOutput(tx) != -1)
+          .map(tx => txToDecrypted(tx, findEncryptedOutput(tx)))
+          .filter(isDecryptedCoupon)
+          .map(decryptedToCoupon)
+          .forEach(coupon => ractive.unshift('coupons', coupon));
+    ractive.set('loadingTx', false);
   })
+  
 
   emitter.on('set-transactions', function(txs) {
     network = getTokenNetwork();
