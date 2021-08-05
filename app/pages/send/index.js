@@ -34,8 +34,20 @@ module.exports = function(el) {
             gasLimit: '',
             selectedDonation: { name: 'None', address: '' },
             orgList: [],
+            selectedCoupon: { Name: 'None', Address: '', Location: '', Date: '' },
+            couponList: [],
             storeAmount: '',
             emptyWalletToggle: false,
+            underscoreToSpace: function(str) {
+                let retstr = '';
+                for (let i = 0; i < str.length; i++) {
+                    retstr += (str[i] == '_' ? ' ' : str[i]);
+                }
+                return retstr;
+            },
+            beautifyDate: function(date) {
+                return date.substring(0, 10) + ' ' + date.substring(10);
+            } 
         }
     })
 
@@ -108,6 +120,11 @@ module.exports = function(el) {
         ractive.set('orgList', wallet.getAllOrgLists());
         var defDon = { name: 'None', address: '' };
         ractive.set('selectedDonation', defDon);
+        ractive.set('couponList', wallet.getCouponLists().Coupons);
+        console.log(wallet.getCouponLists().Coupons);
+        console.log(wallet.getAllOrgLists());
+        var defCoup = { Name: 'None', Address: '', Location: '', Date: '' };
+        ractive.set('selectedCoupon', defCoup);
     });
 
     emitter.once('ticker', function(rates) {
@@ -191,6 +208,22 @@ module.exports = function(el) {
     ractive.on('donate-to-address', function() {
             var donation = ractive.get('selectedDonation');
             ractive.set('to', donation);
+    })
+
+    ractive.on('buy-coupon', function() {
+            var coupon = ractive.get('selectedCoupon');
+            ractive.set('validating', true);
+            var to = coupon.Address
+            resolveTo(to, function(data) {
+                fixBitcoinCashAddress(data);
+                getDynamicFees(function(dynamicFees) {
+                    console.log("data.to: " + data.to);
+                    console.log("d.alias: " + data.alias);
+                    console.log("dynfees: ");
+                    console.log(dynamicFees);
+                    validateAndShowConfirm(data.to, data.alias, dynamicFees, coupon.Price);
+                });
+            })
     })
 
     ractive.on('donation-info', function() {
