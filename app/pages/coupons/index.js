@@ -30,15 +30,17 @@ function txToDecrypted(tx) {
 
     let encrypted_coupon = tx.outs[n].scriptPubKey.hex.slice(4)
     // pubkey/privkey of address where the transaction was sent
-    let string
-    try {
-        let pair = wallet.getPrivateKeyForAddress(tx.outs[0].address)
-        let dec = jeeq.decryptMessage(pair.d, pair.getPublicKeyBuffer(), Buffer.from(encrypted_coupon, 'hex'))
-        string = new TextDecoder().decode(dec);
-    } catch (error) {
-        console.log(error)
-        string = "privkey not found"
+    let pair
+    for (let i = 0; i < tx.outs.length; i++) {
+        try {
+            pair = wallet.getPrivateKeyForAddress(tx.outs[i].address);
+            continue;
+        } catch (error) {
+            console.log(error)
+        }
     }
+    let dec = jeeq.decryptMessage(pair.d, pair.getPublicKeyBuffer(), Buffer.from(encrypted_coupon, 'hex'))
+    let string = new TextDecoder().decode(dec);
 
     return {coupon: string, timestamp: tx.timestamp, confirmations: tx.confirmations};
 }
