@@ -37,7 +37,6 @@
         <label for="npolist">{{ translate("Pay/Donate to listed organization") }}</label>
           <span class="_donations dropdown">
                 <select id="donations" value="{{selectedDonation}}" tabindex="-1" on-change="donate-to-address" on-change="donation-info">
-                  <option value="" selected>None</option>
                   {{#each orgList as ol}}
                     <optgroup label="{{underscoreToSpace(ol.organization_group)}}">
                       {{#each organizations as org}}
@@ -65,7 +64,6 @@
         <label for="couponlist">{{ translate("Buy coupon on blockchain") }}</label>
           <span class="_coupons dropdown">
                 <select id="coupons" value="{{selectedCoupon}}" tabindex="-1" on-change="buy-coupon">
-                  <option value="" selected>None</option>
                   {{#each couponList as cl}}
                     <optgroup label="{{underscoreToSpace(cl.coupon_group)}}">
                       {{#each cl.coupons as coupon}}

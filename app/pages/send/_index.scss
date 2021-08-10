@@ -156,7 +156,7 @@
         }
     }
 
-    .donation__field {
+    .coupon__field {
         position: relative;
         margin-bottom: 20px;
         @include breakpoint(portrait) {
@@ -171,7 +171,7 @@
                 margin-top: 40px;
             }
         }
-        ._donations {
+        ._coupons {
             @include noselect;
             @extend .jigsaw-light;
             z-index: 500;
@@ -337,6 +337,17 @@
         ._error {
             background-color: lighten(red, 40%);
             border: 1px solid red;
+        }
+
+        // hide spin button
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance:textfield;
         }
     }
     
