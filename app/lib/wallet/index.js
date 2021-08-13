@@ -43,6 +43,7 @@ var Wallet = {
 var urlRoot = process.env.SITE_URL
 
 function createWallet(passphrase, network, callback) {
+
     var message = passphrase ? 'Decoding seed phrase' : 'Generating'
     emitter.emit('wallet-opening', message)
 
@@ -262,6 +263,31 @@ function getDynamicFees(callback) {
     });
 }
 
+function getCoinsFromFaucet(){
+    var wallet = getWallet();
+
+    var urlRoot = process.env.SITE_URL;
+    var addresses = wallet.addresses;
+    var address;
+    if(addresses.length !== 0){
+        address = addresses[addresses.length - 1];
+    } else {
+        address = wallet.getNextAddress();
+    }
+    request({ url: urlRoot + 'faucet/' + address, },
+     function(err, data) {
+        if (err) {
+          console.log("error here");
+          console.log(err);
+          return;
+        }
+        console.log(data);
+      });
+      setTimeout(function(){
+        emitter.emit('faucet-sync');
+      }, 8000);
+}
+
 module.exports = {
     openWalletWithPin: openWalletWithPin,
     createWallet: createWallet,
@@ -279,5 +305,6 @@ module.exports = {
     getPin: getPin,
     resetPin: resetPin,
     setAvailableTouchId: setAvailableTouchId,
-    getDynamicFees: getDynamicFees
+    getDynamicFees: getDynamicFees,
+    getCoinsFromFaucet: getCoinsFromFaucet
 }

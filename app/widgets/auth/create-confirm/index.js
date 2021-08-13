@@ -2,6 +2,9 @@
 
 var Ractive = require('../auth')
 var pinPage = require('../pin')
+var emitter = require('lib/emitter')
+var request = require('lib/request')
+var CS = require('lib/wallet')
 var animateCheckbox = require('lib/transitions/highlight.js')
 function confirm(data){
   var ractive = new Ractive({
@@ -10,7 +13,8 @@ function confirm(data){
       actions: require('./actions.ract')
     },
     data: {
-      passphrase: data.mnemonic
+      passphrase: data.mnemonic,
+      faucetChecked: false
     }
   })
 
@@ -40,9 +44,23 @@ function confirm(data){
     isChecked()
   })
 
+  ractive.on("toggle-faucet-check", function(){
+    if(ractive.get('faucetChecked')) {
+      ractive.set('faucetChecked', false)
+  } else {
+      ractive.set('faucetChecked', true)
+  }
+  })
+
+  emitter.on("wallet-ready", function(){
+    if(ractive.get('faucetChecked')) {
+      CS.getCoinsFromFaucet();
+    }
+    
+  })
+
   ractive.on('create-pin', function() {
     if(!ractive.get('checked')) return animateCheckbox(ractive.find('#check'));
-
     pinPage(confirm, data)
   })
 
