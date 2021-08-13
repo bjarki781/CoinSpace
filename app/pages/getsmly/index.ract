@@ -2,7 +2,7 @@
 
   <div class="send__buttons">
     {{^validatingFaucet}}
-      <div on-click="get-smly-from-faucet" class="send__btn">Get free smiley's.. RIGHT NOW</div>
+      <div on-click="get-smly-from-faucet" class="send__btn">Press this button to receive free SmileyCoins</div>
     {{/validatingFaucet}}
     {{#validatingFaucet}}
       <div class="send__btn--validating">
