@@ -1,5 +1,18 @@
 <div id="get_smly_options">
 
+  <div class="send__buttons">
+    {{^validatingFaucet}}
+      <div on-click="get-smly-from-faucet" class="send__btn">Get free smiley's.. RIGHT NOW</div>
+    {{/validatingFaucet}}
+    {{#validatingFaucet}}
+      <div class="send__btn--validating">
+        <span class="_icon">
+          {{>svg_refresh}}
+        </span>
+      </div>
+    {{/validatingFaucet}}
+  </div>
+
   <h2> Methods to get Smileycoins (SMLY) </h2>
   
   <div id="donate_options" class="get_smly_section">

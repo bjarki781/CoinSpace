@@ -38,7 +38,6 @@ module.exports = function(el) {
   })
 
   emitter.on('wallet-ready', function(){
-    console.log('on wallet-ready event')
     var balance = getWallet().getBalance()
     ractive.set('bitcoinBalance', balance)
     ractive.set('denomination', getWallet().denomination)
@@ -69,7 +68,27 @@ module.exports = function(el) {
   })
 
   ractive.on('sync-click', function(context) {
+    console.log("context");
+    console.log(context);
     context.original.preventDefault();
+    if (!ractive.get('isSyncing')) {
+      emitter.emit('sync')
+      setTimeout(function() {
+        sync(function(err){
+          if (err) return showError({message: err.message})
+          emitter.emit('update-balance')
+        }, function(err, txs) {
+          if (err) {
+            emitter.emit('set-transactions', [])
+            return showError({message: err.message})
+          }
+          emitter.emit('set-transactions', txs)
+        })
+      }, 200)
+    }
+  })
+
+  emitter.on('faucet-sync', function(){
     if (!ractive.get('isSyncing')) {
       emitter.emit('sync')
       setTimeout(function() {

@@ -61,9 +61,9 @@
         </div>
       </div>
 
-      <div class="coupon__field">
+      <div class="coupon__field donation__field">
         <label for="couponlist">{{ translate("Buy coupon on blockchain") }}</label>
-          <span class="_coupons dropdown">
+          <span class="_coupons _donations dropdown">
                 <select id="coupons" value="{{selectedCoupon}}" tabindex="-1" on-change="buy-coupon">
                   <option value="" selected>None</option>
                   {{#each couponList as cl}}
