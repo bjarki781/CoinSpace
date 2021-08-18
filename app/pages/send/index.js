@@ -292,19 +292,11 @@ module.exports = function(el) {
     }
 
     function checkUrlForPrefill() {
-        var loc = window.location.search
-        loc = loc.split('&')
-        if (loc.length > 2) {
-            var add = loc[1].split('=')[1]
-            var amount = loc[2].split('=')[1]
-            ractive.set('validating', true);
-            var to = ractive.get('to');
-            resolveTo(to, function(data) {
-                fixBitcoinCashAddress(data);
-                getDynamicFees(function(dynamicFees) {
-                    validateAndShowConfirm(add, data.alias, dynamicFees, amount);
-                });
-            })
+        var loc = window.location.search.substring(1)
+        let obj = JSON.parse('{"' + decodeURI(loc).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+        console.log(obj);
+        if (obj.address) {
+            ractive.set('to', obj.address);
         }
     }
     return ractive
