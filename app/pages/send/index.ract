@@ -36,11 +36,12 @@
 
         <label for="npolist">{{ translate("Pay/Donate to listed organization") }}</label>
           <span class="_donations dropdown">
-                <select id="donations" value="{{selectedDonation}}" tabindex="-1" on-change="donate-to-address" on-change="donation-info">
+                <select id="donations" value="{{selectedDonation}}" tabindex="-1" 
+                        on-change="donate-to-address" on-change="donation-info">
                   {{#each orgList as ol}}
                     <optgroup label="{{underscoreToSpace(ol.organization_group)}}">
                       {{#each organizations as org}}
-                        <option value="{{org.address}}" >{{underscoreToSpace(org.name)}} </option>
+                        <option value="{{org.address}}">{{underscoreToSpace(org.name)}}</option>
                       {{/each}}
                     </optgroup>
                   {{/each}}

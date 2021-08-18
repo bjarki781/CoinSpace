@@ -36,7 +36,6 @@ function txToDecrypted(tx) {
             pair = wallet.getPrivateKeyForAddress(tx.outs[i].address);
             continue;
         } catch (error) {
-            console.log(error)
         }
     }
     let dec = jeeq.decryptMessage(pair.d, pair.getPublicKeyBuffer(), Buffer.from(encrypted_coupon, 'hex'))
