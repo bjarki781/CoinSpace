@@ -26,6 +26,13 @@ module.exports = function(el){
     ractive.set('nextAddress', "wallet:"+CS.getWallet().getNextAddress());
   })
 
+  ractive.on('get-smly-from-faucet', function(){
+    ractive.set('validatingFaucet', true);
+    CS.getCoinsFromFaucet();
+    setTimeout(function(){
+      ractive.set('validatingFaucet', false);
+    }, 9000)
+  })
 
   /*
   // Not needed unless we want to display address in html
@@ -69,7 +76,6 @@ module.exports = function(el){
       }
     }
   }); 
-
 
   return ractive
 }

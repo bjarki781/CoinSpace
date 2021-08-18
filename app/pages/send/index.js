@@ -15,6 +15,7 @@ var getDynamicFees = require('lib/wallet').getDynamicFees;
 var resolveTo = require('lib/openalias/xhr.js').resolveTo;
 var qrcode = require('lib/qrcode');
 var bchaddr = require('bchaddrjs');
+var toUnit = require('lib/convert').toUnit;
 
 
 module.exports = function(el) {
@@ -100,7 +101,7 @@ module.exports = function(el) {
     ractive.on('empty-amount', function() {
         console.log('Trying to empty wallet!');
         var wallet = getWallet();
-        var balance = wallet.getBalance() - 1.0;
+        var balance = toUnit(wallet.getBalance()).minus(1);// mínus einn og klára css hjá bjarka
         if(balance < 1){
             return;
         }

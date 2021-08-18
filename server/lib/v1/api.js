@@ -10,7 +10,7 @@ var openalias = require('cs-openalias');
 var fee = require('./fee');
 var ticker = require('./ticker');
 var ethereumTokens = require('./ethereumTokens');
-
+var axios = require('axios');
 var router = express.Router();
 
 router.post('/register', validateAuthParams(false), function(req, res) {
@@ -40,23 +40,19 @@ router.post('/login', validateAuthParams(true), function(req, res) {
 });
 
 router.use(function (req, res, next) {
-  console.info('in router');
   next();
 })
 
 
 router.get('/api/exist', function(req, res, next) {
-  console.info('ayee')
   next();
 })
 
 router.get('/exist', function(req, res, next) {
-  console.info('ayee2')
   next();
 })
 
 router.get('/exist', function(req, res) {
-  console.info('Checking');
   var walletId = req.query.wallet_id;
   console.info(walletId)
   if (!walletId) return res.status(400).json({error: 'Bad request'});
@@ -172,6 +168,20 @@ router.put('/location', restrict, function(req, res) {
 router.delete('/location', restrict, function(req, res) {
   geo.remove(req.body.id).catch(console.error);
   res.status(200).send();
+});
+
+router.get('/faucet/:address', function(req, res, next){
+  axios.get('https://faucet.smileyco.in/faucet?address=' + req.params.address)
+  .then(function(response){
+    console.log("successfully fetched from faucet");
+  })
+  .catch(function(err){
+    console.log("error fetching coins from faucet");
+    console.err(err);
+  });
+
+  res.status(200).send();
+
 });
 
 router.use(function(err, req, res, next) {
