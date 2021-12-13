@@ -33,8 +33,9 @@ function open(data) {
 
     try {
       if (importTxOptions) {
+        importTxOptions.unspents.pop();
         importTxOptions.fee = fee;
-        tx = wallet.createImportTx(importTxOptions);
+        tx = [wallet.createImportTx(importTxOptions)];
       } else {
         console.log("to:" + to + "\nval:" + value + "\nfee:" + fee)
         console.log("bal:" + wallet.getBalance())
